@@ -1,0 +1,5 @@
+../Core/Usr/Src/alpha_beta.c:4:5:evaluate	24	static
+../Core/Usr/Src/alpha_beta.c:49:5:alphaBeta	80	static
+../Core/Usr/Src/alpha_beta.c:95:6:findBestMove	56	static
+../Core/Usr/Src/alpha_beta.c:114:6:printBoard	24	static
+../Core/Usr/Src/alpha_beta.c:123:5:count	32	static

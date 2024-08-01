@@ -1,0 +1,5 @@
+../Core/Usr/Src/alpha_beta.c:4:5:evaluate	19
+../Core/Usr/Src/alpha_beta.c:49:5:alphaBeta	13
+../Core/Usr/Src/alpha_beta.c:95:6:findBestMove	5
+../Core/Usr/Src/alpha_beta.c:114:6:printBoard	3
+../Core/Usr/Src/alpha_beta.c:123:5:count	4

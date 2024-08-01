@@ -1,0 +1,12 @@
+D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/chess_stack.h:23:6:Stack_init	1
+D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/chess_stack.h:28:5:Stack_isEmpty	1
+D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/chess_stack.h:32:5:Stack_isFull	1
+D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/chess_stack.h:36:6:Stack_push	2
+D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/chess_stack.h:43:6:Stack_pushPos	2
+D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/chess_stack.h:50:5:Stack_pop	2
+../Core/Usr/Src/Robot.c:19:6:Robot_Move	15
+../Core/Usr/Src/Robot.c:70:6:Robot_Up	1
+../Core/Usr/Src/Robot.c:74:6:Robot_Down	1
+../Core/Usr/Src/Robot.c:79:6:Robot_Move_Start	1
+../Core/Usr/Src/Robot.c:128:6:Robot_calcu	1
+../Core/Usr/Src/Robot.c:140:6:Robot_move_point	14
