@@ -67,12 +67,12 @@ void Robot_Move(ROBOT_DATA *data, unsigned int Mot)
     }
 }
 
-void Robot_Up(ROBOT_DATA *data){
-
+void Robot_Up(ROBOT_DATA *data)
+{
 }
 
-void Robot_Down(ROBOT_DATA *data){
-
+void Robot_Down(ROBOT_DATA *data)
+{
 }
 
 // 机器人初始化移动
@@ -81,20 +81,21 @@ void Robot_Move_Start(ROBOT_DATA *data, UART_DATA *Usr_UART)
     // 初始化顺序，先进行电机2初始化，然后电机3，其次电机4，最后电机1
     __HAL_TIM_SetCompare(&htim4, Mot1, 220); // 电机1的初始化
     HAL_Delay(1000);
-    __HAL_TIM_SetCompare(&htim4, Mot2, 100); // 首先进行电机2的初始化
+    __HAL_TIM_SetCompare(&htim4, Mot2, 45); // 首先进行电机2的初始化
     HAL_Delay(1000);
-    __HAL_TIM_SetCompare(&htim4, Mot3, 100); // 电机3的初始化
+    __HAL_TIM_SetCompare(&htim4, Mot3, 45); // 电机3的初始化
     HAL_Delay(1000);
-    __HAL_TIM_SetCompare(&htim4, Mot4, 220); // 电机4的初始化
+    __HAL_TIM_SetCompare(&htim4, Mot4, 45); // 电机4的初始化
     HAL_Delay(1000);
     // 位置初始化
     data->now_j1 = 220;
-    data->now_j2 = 100;
-    data->now_j3 = 100;
-    data->now_j4 = 220;
-    data->move_j4 = 0xE0;
-    data->move_j3 = 0x64;
-    data->move_j2 = 0x64;
+    data->now_j2 = 45;
+    data->now_j3 = 45;
+    data->now_j4 = 45;
+    // FF D0 80 50 8D 01 FF FF FF FF
+    data->move_j4 = 0xD0;
+    data->move_j3 = 0x80;
+    data->move_j2 = 0x50;
     data->move_j1 = 0xDC;
     data->mod = 0x01;
     // E0 64 64 8D
@@ -104,24 +105,36 @@ void Robot_Move_Start(ROBOT_DATA *data, UART_DATA *Usr_UART)
     Robot_Move(data, Mot4);
     Robot_Move(data, Mot1);
     // 完成初始化
-    Usr_UART->head = 0x00; // 重新循环
-    HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Usr_UART, UART_TRAN_NUM);
-    
+//    Usr_UART->head = 0x00; // 重新循环
+//    HAL_UART_Transmit_DMA(&huart1, (uint8_t *)Usr_UART, UART_TRAN_NUM);
+
     Stack_init(&whiteStack);
     Stack_init(&blackStack);
-    Stack_push(&whiteStack, 0x7D, 0xA5, 0x85, 0xC9);
-    Stack_push(&whiteStack, 0x93, 0x98, 0x82, 0xC0);
-    Stack_push(&whiteStack, 0x9B, 0x8B, 0x86, 0xBA);
-    Stack_push(&whiteStack, 0x9B, 0x79, 0x8E, 0xB4);
-    Stack_push(&whiteStack, 0xAA, 0x5E, 0x95, 0xB0);
+    // FF D0 80 50 8D 01 FF FF FF FF
+    // FF AC 66 84 A6 00 FF FF FF FF
+    // FF AC 7A 7A A8 00 FF FF FF FF
+    // FF 9A 8A 78 AD 00 FF FF FF FF
+    // FF 90 9A 76 B0 00 FF FF FF FF
+    // FF 7D A6 78 B3 00 FF FF FF FF
+    
+    Stack_push(&whiteStack, 0x7D, 0xA6, 0x78, 0xB3);
+    Stack_push(&whiteStack, 0x90, 0x9A, 0x76, 0xB0);
+    Stack_push(&whiteStack, 0x9A, 0x8A, 0x78, 0xAD);
+    Stack_push(&whiteStack, 0xAC, 0x7A, 0x7A, 0xA8);
+    Stack_push(&whiteStack, 0xAC, 0x66, 0x84, 0xA6);
 
+    // FF D0 80 50 8D 01 FF FF FF FF
+    // FF AC 66 84 74 00 FF FF FF FF
+    // FF AC 7A 7A 72 00 FF FF FF FF
+    // FF 9A 8A 78 6D 00 FF FF FF FF
+    // FF 90 9A 76 68 00 FF FF FF FF
+    // FF 7D A6 78 60 00 FF FF FF FF
 
-    Stack_push(&blackStack, 0x7D, 0xAD, 0x81, 0x60);
-    Stack_push(&blackStack, 0x8E, 0xA0, 0x80, 0x69);
-    Stack_push(&blackStack, 0xA0, 0x8F, 0x80, 0x70);
-    Stack_push(&blackStack, 0xAD, 0x7B, 0x8A, 0x78);
-    Stack_push(&blackStack, 0xAd, 0x62, 0x92, 0x7C);
-
+    Stack_push(&blackStack, 0x7D, 0xA6, 0x78, 0x60);
+    Stack_push(&blackStack, 0x90, 0x9A, 0x76, 0x68);
+    Stack_push(&blackStack, 0x9A, 0x8A, 0x78, 0x6D);
+    Stack_push(&blackStack, 0xAC, 0x7A, 0x7A, 0x72);
+    Stack_push(&blackStack, 0xAC, 0x66, 0x84, 0x74);
 }
 
 // 机器人坐标位置计算
@@ -139,54 +152,15 @@ void Robot_calcu(ROBOT_DATA *data, UART_DATA *Usr_UART)
 // 机器人点移动
 void Robot_move_point(ROBOT_DATA *data, unsigned char point)
 { // 初始化位置
-    // FF 90 2B 2E DC 02 FF FF FF FF
-    // home等待位置
-    // FF E0 64 64 8C 01 FF FF FF FF
-    // 4号点
-    // FF 90 94 78 9A 00 FF FF FF FF
-    // 5号点
-    // FF 90 94 78 88 00 FF FF FF FF
-    // 6号点
-    // FF 90 94 78 7A 00 FF FF FF FF
-    // 2号点
-    // FF B0 7D 7A 8A 00 FF FF FF FF
-    // 3号点
-    // FF AE 7B 7B 7F 00 FF FF FF FF
-    // 1号点
-    // FF B0 7B 7B 99 00 FF FF FF FF
-    // 8号点
-    // FF 80 AA 76 86 00 FF FF FF FF
-    // 9号点
-    // FF 80 A8 78 72 00 FF FF FF FF
-    // 7号点
-    // FF 80 A8 76 9B 00 FF FF FF FF
-    // 物品1点
-    // FF AD 66 84 A6 00 FF FF FF FF
-    // 物品2点
-    // FF AD 7B 7B A7 00 FF FF FF FF
-    // 物品3点
-    // FF A0 8A 76 AA 00 FF FF FF FF
-    // 物品4点
-    // FF 90 9A 75 AF 00 FF FF FF FF
-    // 物品5点
-    // FF 80 A4 76 B2 00 FF FF FF FF
-    // 物品6点
-    // FF AD 66 85 72 00 FF FF FF FF
-    // 物品7点
-    // FF AD 7B 7B 6D 00 FF FF FF FF
-    // 物品8点
-    // FF A0 8B 76 6A 00 FF FF FF FF
-    // 物品9点
-    // FF 90 9A 75 64 00 FF FF FF FF
-    // 物品10点
-    // FF 80 A4 76 5A 00 FF FF FF FF
     switch (point)
     {
     case 1:
-        data->move_j4 = 0x92;
-        data->move_j3 = 0x92;
-        data->move_j2 = 0x80;
-        data->move_j1 = 0xA0;
+        // FF AC 79 7B 9A 00 FF FF FF FF
+        //
+        data->move_j4 = 0xAC;
+        data->move_j3 = 0x79;
+        data->move_j2 = 0x7B;
+        data->move_j1 = 0x9A;
         data->mod = 0x00;
         Robot_Move(data, Mot1);
         Robot_Move(data, Mot4);
@@ -194,75 +168,10 @@ void Robot_move_point(ROBOT_DATA *data, unsigned char point)
         Robot_Move(data, Mot2);
         break;
     case 2:
-        data->move_j4 = 0x8E;
-        data->move_j3 = 0x97;
-        data->move_j2 = 0x82;
-        data->move_j1 = 0x94;
-        data->mod = 0x00;
-        Robot_Move(data, Mot1);
-        Robot_Move(data, Mot4);
-        Robot_Move(data, Mot3);
-        Robot_Move(data, Mot2);
-        break;
-    case 3:
-        data->move_j4 = 0x92;
-        data->move_j3 = 0x96;
-        data->move_j2 = 0x7D;
-        data->move_j1 = 0x84;
-        data->mod = 0x00;
-        Robot_Move(data, Mot1);
-        Robot_Move(data, Mot4);
-        Robot_Move(data, Mot3);
-        Robot_Move(data, Mot2);
-        break;
-    case 4:
-        data->move_j4 = 0x82;
-        data->move_j3 = 0xA8;
-        data->move_j2 = 0x7D;
-        data->move_j1 = 0xA5;
-        data->mod = 0x00;
-        Robot_Move(data, Mot1);
-        Robot_Move(data, Mot4);
-        Robot_Move(data, Mot3);
-        Robot_Move(data, Mot2);
-        break;
-    case 5:
-        data->move_j4 = 0x82;
-        data->move_j3 = 0xA8;
-        data->move_j2 = 0x80;
-        data->move_j1 = 0x94;
-        data->mod = 0x00;
-        Robot_Move(data, Mot1);
-        Robot_Move(data, Mot4);
-        Robot_Move(data, Mot3);
-        Robot_Move(data, Mot2);
-        break;
-    case 6:
-        data->move_j4 = 0x82;
-        data->move_j3 = 0xAB;
-        data->move_j2 = 0x7B;
-        data->move_j1 = 0x7C;
-        data->mod = 0x00;
-        Robot_Move(data, Mot1);
-        Robot_Move(data, Mot4);
-        Robot_Move(data, Mot3);
-        Robot_Move(data, Mot2);
-        break;
-    case 7:
-        data->move_j4 = 0x6E;
-        data->move_j3 = 0xBD;
-        data->move_j2 = 0x80;
-        data->move_j1 = 0xA8;
-        data->mod = 0x00;
-        Robot_Move(data, Mot1);
-        Robot_Move(data, Mot4);
-        Robot_Move(data, Mot3);
-        Robot_Move(data, Mot2);
-        break;
-    case 8:
-        data->move_j4 = 0x6E;
-        data->move_j3 = 0xC2;
-        data->move_j2 = 0x80;
+        // FF B0 7A 7A 8E 00 FF FF FF FF
+        data->move_j4 = 0xB0;
+        data->move_j3 = 0x7A;
+        data->move_j2 = 0x7A;
         data->move_j1 = 0x8E;
         data->mod = 0x00;
         Robot_Move(data, Mot1);
@@ -270,11 +179,84 @@ void Robot_move_point(ROBOT_DATA *data, unsigned char point)
         Robot_Move(data, Mot3);
         Robot_Move(data, Mot2);
         break;
+    case 3:
+        // FF B0 78 7B 80 00 FF FF FF FF
+        data->move_j4 = 0xB0;
+        data->move_j3 = 0x78;
+        data->move_j2 = 0x7B;
+        data->move_j1 = 0x80;
+        data->mod = 0x00;
+        Robot_Move(data, Mot1);
+        Robot_Move(data, Mot4);
+        Robot_Move(data, Mot3);
+        Robot_Move(data, Mot2);
+        break;
+    case 4:
+        // FF 90 96 76 9C 00 FF FF FF FF
+        data->move_j4 = 0x90;
+        data->move_j3 = 0x96;
+        data->move_j2 = 0x76;
+        data->move_j1 = 0x9C;
+        data->mod = 0x00;
+        Robot_Move(data, Mot1);
+        Robot_Move(data, Mot4);
+        Robot_Move(data, Mot3);
+        Robot_Move(data, Mot2);
+        break;
+    case 5:
+        // FF 90 96 76 8E 00 FF FF FF FF
+        data->move_j4 = 0x90;
+        data->move_j3 = 0x96;
+        data->move_j2 = 0x76;
+        data->move_j1 = 0x8E;
+        data->mod = 0x00;
+        Robot_Move(data, Mot1);
+        Robot_Move(data, Mot4);
+        Robot_Move(data, Mot3);
+        Robot_Move(data, Mot2);
+        break;
+    case 6:
+        // FF 90 95 76 7E 00 FF FF FF FF
+        data->move_j4 = 0x90;
+        data->move_j3 = 0x95;
+        data->move_j2 = 0x76;
+        data->move_j1 = 0x7E;
+        data->mod = 0x00;
+        Robot_Move(data, Mot1);
+        Robot_Move(data, Mot4);
+        Robot_Move(data, Mot3);
+        Robot_Move(data, Mot2);
+        break;
+    case 7:
+        // FF 80 A8 76 9E 00 FF FF FF FF
+        data->move_j4 = 0x80;
+        data->move_j3 = 0xA8;
+        data->move_j2 = 0x76;
+        data->move_j1 = 0x9E;
+        data->mod = 0x00;
+        Robot_Move(data, Mot1);
+        Robot_Move(data, Mot4);
+        Robot_Move(data, Mot3);
+        Robot_Move(data, Mot2);
+        break;
+    case 8:
+        // FF 80 AA 76 8A 00 FF FF FF FF
+        data->move_j4 = 0x80;
+        data->move_j3 = 0xAA;
+        data->move_j2 = 0x76;
+        data->move_j1 = 0x8A;
+        data->mod = 0x00;
+        Robot_Move(data, Mot1);
+        Robot_Move(data, Mot4);
+        Robot_Move(data, Mot3);
+        Robot_Move(data, Mot2);
+        break;
     case 9:
-        data->move_j4 = 0x6E;
-        data->move_j3 = 0xBE;
-        data->move_j2 = 0x7E;
-        data->move_j1 = 0x76;
+        // FF 80 A8 76 78 00 FF FF FF FF
+        data->move_j4 = 0x80;
+        data->move_j3 = 0xA8;
+        data->move_j2 = 0x76;
+        data->move_j1 = 0x78;
         data->mod = 0x00;
         Robot_Move(data, Mot1);
         Robot_Move(data, Mot4);
@@ -298,9 +280,10 @@ void Robot_move_point(ROBOT_DATA *data, unsigned char point)
         Robot_Move(data, Mot2);
         break;
     case 12:
-        data->move_j4 = 0xE0;
-        data->move_j3 = 0x64;
-        data->move_j2 = 0x64;
+        // FF D0 80 50 8D 01 FF FF FF FF
+        data->move_j4 = 0xD0;
+        data->move_j3 = 0x80;
+        data->move_j2 = 0x50;
         data->move_j1 = 0x8D;
         data->mod = 0x01;
         Robot_Move(data, Mot2);
@@ -397,9 +380,10 @@ void Robot_move_point(ROBOT_DATA *data, unsigned char point)
     //     Robot_Move(data, Mot2);
     //     break;
     case 0:
-        data->move_j4 = 0xE0;
-        data->move_j3 = 0x64;
-        data->move_j2 = 0x64;
+        // FF D0 80 50 8D 01 FF FF FF FFS
+        data->move_j4 = 0xD0;
+        data->move_j3 = 0x80;
+        data->move_j2 = 0x50;
         data->move_j1 = 0xDC;
         data->mod = 0x01;
         Robot_Move(data, Mot2);

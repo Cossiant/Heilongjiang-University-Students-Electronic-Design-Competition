@@ -9,16 +9,17 @@ ROBOT_DATA Robot_data;
 
 KEY_DATA Key;
 
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-//    // HAL_UART_Transmit_IT(&huart1,receiveData,2);
-//    // 返回函数应该仅用作测试接口使用，当接口测试没问题应将其关闭，否则将会出现中断占用
-//    HAL_UART_Receive_DMA(&huart1, (uint8_t *)&Usr_UART, UART_READ_NUM);
-//    Usr_chessman.read_head = Usr_UART.head;
-//    Usr_UART.head = 0xB0;  // 停止openmv发送数据
-//    // 如果这里使用低延迟的执行函数，请使用阻塞式发送
-//    HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART, UART_TRAN_NUM, 1);
-//    Usr_UART.ok = 1;  // 可以开始进行数据处理标志
-//}
+// //这里即得要要注释掉
+// void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+//     // HAL_UART_Transmit_IT(&huart1,receiveData,2);
+//     // 返回函数应该仅用作测试接口使用，当接口测试没问题应将其关闭，否则将会出现中断占用
+//     HAL_UART_Receive_DMA(&huart1, (uint8_t *)&Usr_UART, UART_READ_NUM);
+//     Usr_chessman.read_head = Usr_UART.head;
+//     Usr_UART.head = 0xB0;  // 停止openmv发送数据
+//     // 如果这里使用低延迟的执行函数，请使用阻塞式发送
+//     HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART, UART_TRAN_NUM, 1);
+//     Usr_UART.ok = 1;  // 可以开始进行数据处理标志
+// }
 
 // void Robot_Move_calcu()
 // {
@@ -45,7 +46,8 @@ KEY_DATA Key;
 // HAL_Delay(1000);
 // }
 
-void Usr_main() {
+void Usr_main()
+{
     // 启动PWM定时器
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
@@ -53,9 +55,11 @@ void Usr_main() {
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
     // 重置ok位为0
     Usr_UART.ok = 0;
-//    // 开启DMA UART接受中断
-//    HAL_UART_Receive_DMA(&huart1, (uint8_t *)&Usr_UART, UART_READ_NUM);
+    // 开启DMA UART接受中断
+    //    这里记得注释掉
+//    HAL_UART_Receive(&huart1, (uint8_t *)&Usr_UART, UART_READ_NUM);
     Robot_Move_Start(&Robot_data, &Usr_UART);
+
     HAL_Delay(20);
     OLED_Init();
     HAL_Delay(20);
@@ -66,7 +70,8 @@ void Usr_main() {
     Key.Key_data = 0x30;
 }
 
-void task2(int cnt) {
+void task2(int cnt)
+{
     // 初始化参数
     Robot_data.whitch_one = 0;
     Robot_data.where = 0;
@@ -77,7 +82,8 @@ void task2(int cnt) {
     OLED_PrintString(0, 15, "第一个棋子颜色", &font16x16, OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     // 读取按键直到完成
-    while (Robot_data.whitch_one == 0) {
+    while (Robot_data.whitch_one == 0)
+    {
         Key_scan_low(&Key);
         Key_scan_high(&Key);
         Robot_data.whitch_one = Key.Key_point;
@@ -90,12 +96,15 @@ void task2(int cnt) {
     OLED_PrintString(0, 15, "第一个棋子位置", &font16x16, OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     // 读取按键直到完成
-    while (Robot_data.where == 0) {
+    while (Robot_data.where == 0)
+    {
         Key_scan_low(&Key);
         Key_scan_high(&Key);
         Robot_data.where = Key.Key_point;
     }
     // 移动到棋子位置
+    Robot_move_point(&Robot_data,12);
+    HAL_Delay(300);
     Robot_move_point(&Robot_data, Robot_data.whitch_one <= 4 ? 10 : 11);
     HAL_Delay(300);
     HAL_GPIO_WritePin(Relay_GPIO_Port, Relay_Pin, GPIO_PIN_SET);
@@ -119,7 +128,8 @@ void task2(int cnt) {
     OLED_PrintString(0, 0, "请输入", &font16x16, OLED_COLOR_NORMAL);
     OLED_PrintString(0, 15, "第二个棋子颜色", &font16x16, OLED_COLOR_NORMAL);
     OLED_ShowFrame();
-    while (Robot_data.whitch_one == 0) {
+    while (Robot_data.whitch_one == 0)
+    {
         Key_scan_low(&Key);
         Key_scan_high(&Key);
         Robot_data.whitch_one = Key.Key_point;
@@ -129,12 +139,15 @@ void task2(int cnt) {
     OLED_PrintString(0, 0, "请输入", &font16x16, OLED_COLOR_NORMAL);
     OLED_PrintString(0, 15, "第二个棋子位置", &font16x16, OLED_COLOR_NORMAL);
     OLED_ShowFrame();
-    while (Robot_data.where == 0) {
+    while (Robot_data.where == 0)
+    {
         Key_scan_low(&Key);
         Key_scan_high(&Key);
         Robot_data.where = Key.Key_point;
     }
     // 移动到棋子位置
+    Robot_move_point(&Robot_data,12);
+    HAL_Delay(300);
     Robot_move_point(&Robot_data, Robot_data.whitch_one <= 4 ? 10 : 11);
     HAL_Delay(300);
     HAL_GPIO_WritePin(Relay_GPIO_Port, Relay_Pin, GPIO_PIN_SET);
@@ -155,7 +168,8 @@ void task2(int cnt) {
     Key.flag = 0;
 }
 
-void Usr_whilemain() {
+void Usr_whilemain()
+{
     Key_scan_low(&Key);
     Key_scan_high(&Key);
     OLED_NewFrame();
@@ -164,7 +178,10 @@ void Usr_whilemain() {
     OLED_PrintString(32, 15, &Key.Key_data, &font16x16, OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     //    任务1
-    if (Key.Key_data == 0x31) {
+    if (Key.Key_data == 0x31)
+    {
+        Robot_move_point(&Robot_data, 12);
+        HAL_Delay(300);
         // 先移动到黑棋位置
         Robot_move_point(&Robot_data, 11);
         HAL_Delay(300);
@@ -184,176 +201,144 @@ void Usr_whilemain() {
         Key.Key_point = 0;
         Key.Key_data = 0x30;
         Key.flag = 0;
-    } else if (Key.Key_data == 0x32) {
+    }
+    else if (Key.Key_data == 0x32)
+    {
         task2(1);
         task2(2);
-    } else if (Key.Key_data == 0x34) {
-    	HAL_Delay(100);
-    	Robot_data.where = 0;
+    }
+    else if (Key.Key_data == 0x34)
+    {
+        Robot_move_point(&Robot_data, 0);
+        HAL_Delay(300);
+        Robot_data.where = 0;
         Board_init(&opeBoard, 1, 2);
         uint8_t t = Board_play(&opeBoard, &huart1, &Robot_data, &Key);
-        t+=16;
+        t += 16;
         HAL_UART_Transmit(&huart1, &t, 1, 10);
         Key.Key_point = 0;
         Key.Key_data = 0x30;
         Key.flag = 0;
-    } else if (Key.Key_data == 0x35) {
-    	HAL_Delay(100);
-    	Robot_data.where = 0;
+    }
+    else if (Key.Key_data == 0x35)
+    {
+        Robot_move_point(&Robot_data, 12);
+        HAL_Delay(300);
+        Robot_data.where = 0;
         Board_init(&opeBoard, 2, 1);
         Board_play(&opeBoard, &huart1, &Robot_data, &Key);
         Key.Key_point = 0;
         Key.Key_data = 0x30;
         Key.flag = 0;
     }
-    // // 接收完成标志
-    // if (Usr_UART.ok == 1)
-    // {
-    //     // 这里的delay记得删除，我目前留在程序是为了测试串口收发使用
-    //     HAL_Delay(1);
-    //     // 根据不同的头选择不同的对数据的处理方式
-    //     switch (Usr_chessman.read_head)
+    //    // // 接收完成标志
+    //     if (Usr_UART.ok == 1)
     //     {
-    //         // 0xAA 棋子的颜色   9
-    //     case 0xAA:
-    //         for (unsigned char i = 0; i < 9; i++)
+    //         // 这里的delay记得删除，我目前留在程序是为了测试串口收发使用
+    //         HAL_Delay(1);
+    //         // 根据不同的头选择不同的对数据的处理方式
+    //         switch (Usr_chessman.read_head)
     //         {
-    //             Usr_chessman.color[i] = Usr_UART.data[i];
+    //             // 0xAA 棋子的颜色   9
+    //         case 0xFE:
+    //             // Robot_data.calcu_data.X = Usr_UART.data[0];
+    //             // Robot_data.calcu_data.Y = Usr_UART.data[1];
+    //             // Robot_data.calcu_data.Z = Usr_UART.data[2];
+    //             // // uint8_t tmp = 0x11;
+    //             // // HAL_UART_Transmit(&huart1, &tmp, 1, 1);
+    //             // // HAL_UART_Transmit(&huart1, (uint8_t
+    //             // // HAL_UART_Transmit(&huart1, (uint8_t
+    //             // // HAL_UART_Transmit(&huart1, (uint8_t
+    //             // Robot_calcu(&Robot_data, &Usr_UART);
+    //             // Usr_UART.data[0] = Robot_data.calcu_data.j1_data;
+    //             // Usr_UART.data[1] = Robot_data.calcu_data.j2_data;
+    //             // Usr_UART.data[2] = Robot_data.calcu_data.j3_data;
+    //             // Usr_UART.data[3] = Robot_data.calcu_data.j4_data;
+    //             // Robot_data.move_j4 = Usr_UART.data[3];
+    //             // Robot_data.move_j3 = Usr_UART.data[2];
+    //             // Robot_data.move_j2 = Usr_UART.data[1];
+    //             // Robot_data.move_j1 = Usr_UART.data[0];
+    //             // Robot_Move(&Robot_data, Mot4);
+    //             // Robot_Move(&Robot_data, Mot3);
+    //             // Robot_Move(&Robot_data, Mot2);
+    //             // Robot_Move(&Robot_data, Mot1);
+    //             // // 移动完成
+    //             // HAL_Delay(1000);
+    //             for (int i = 0; i < 9; i++)
+    //             {
+    //                 Robot_move_point(&Robot_data, i + 10);
+    //                 Robot_move_point(&Robot_data, 0);
+    //                 Robot_move_point(&Robot_data, i + 1);
+    //                 Robot_move_point(&Robot_data, 0);
+    //             }
+    //             Usr_UART.head = 0xFE;
+    //             HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART, UART_READ_NUM,
+    //             1);
+    //
+    //             break;
+    //             // 这是测试选项，用于输出结果判断是否处理完成
+    //         case 0xFF:
+    //             // 中心点坐标 145
+    //             // 起始点坐标 48
+    //             // 终值点坐标 238
+    //             // 电机1
+    //             // 中心点坐标 138
+    //             // 起始点坐标 45
+    //             // 终值点坐标 232
+    //             // 电机2
+    //             // 中心点坐标 138
+    //             // 起始点坐标 43
+    //             // 终值点坐标 200
+    //             // 电机3
+    //             // 中心点坐标 150
+    //             // 起始点坐标 50
+    //             // 终值点坐标 238
+    //             // 电机4
+    //             // 移动电机
+    //             // __HAL_TIM_SetCompare(&htim4, Mot2, Usr_UART.data[0]); //
+    ////             首先进行电机2的初始化
+    //
+    //             // 首先读取电机要移动到的目标数据
+    //             Robot_data.move_j4 = Usr_UART.data[0];
+    //             Robot_data.move_j3 = Usr_UART.data[1];
+    //             Robot_data.move_j2 = Usr_UART.data[2];
+    //             Robot_data.move_j1 = Usr_UART.data[3];
+    //             Robot_data.mod = Usr_UART.data[4];
+    //             // 执行移动函数
+    //             // 0号模式，移动到指定位置模式
+    //             if (Robot_data.mod == 0x00)
+    //             {
+    //                 Robot_Move(&Robot_data, Mot1);
+    //                 Robot_Move(&Robot_data, Mot4);
+    //                 Robot_Move(&Robot_data, Mot3);
+    //                 Robot_Move(&Robot_data, Mot2);
+    //             }
+    //             // 1号模式，从棋盘到其他地方使用
+    //             else if (Robot_data.mod == 0x01)
+    //             {
+    //                 Robot_Move(&Robot_data, Mot2);
+    //                 Robot_Move(&Robot_data, Mot3);
+    //                 Robot_Move(&Robot_data, Mot4);
+    //                 Robot_Move(&Robot_data, Mot1);
+    //             }
+    //             // 2号模式，初始化
+    //             else if (Robot_data.mod == 0x02)
+    //             {
+    //                 Robot_Move(&Robot_data, Mot1);
+    //                 Robot_Move(&Robot_data, Mot2);
+    //                 Robot_Move(&Robot_data, Mot3);
+    //                 Robot_Move(&Robot_data, Mot4);
+    //             }
+    //             // 移动完成
+    //             HAL_Delay(1000);
+    //             Usr_UART.head = 0xFF;
+    //             HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART, UART_TRAN_NUM,
+    //             1); break;
+    //         default:
+    //             break;
     //         }
-    //         Usr_UART.head = 0xB2; // 0xB2 stm32准备继续接收
-    //         HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART,
-    //         UART_TRAN_NUM); break;
-    //         // 0xAB 棋子的位置(x)9
-    //     case 0xAB:
-    //         for (unsigned char i = 0; i < 9; i++)
-    //         {
-    //             // Usr_chessman.x[i] = Usr_UART.data[i];
-    //         }
-    //         Usr_UART.head = 0xB3; // 0xB3 stm32准备继续接收
-    //         HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART,
-    //         UART_TRAN_NUM); break;
-    //         // 0xAC 棋子的位置(y)9
-    //     case 0xAC:
-    //         for (unsigned char i = 0; i < 9; i++)
-    //         {
-    //             // Usr_chessman.y[i] = Usr_UART.data[i];
-    //         }
-    //         // move执行
-
-    //         HAL_Delay(1000);
-    //         // 循环
-    //         Usr_UART.head = 0xB1; // 重新循环
-    //         HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART,
-    //         UART_TRAN_NUM); break;
-    //     case 0xAD:
-
-    //         break;
-    //     case 0xAE:
-
-    //         break;
-    //     case 0xFE:
-    //         // Robot_data.calcu_data.X = Usr_UART.data[0];
-    //         // Robot_data.calcu_data.Y = Usr_UART.data[1];
-    //         // Robot_data.calcu_data.Z = Usr_UART.data[2];
-    //         // // uint8_t tmp = 0x11;
-    //         // // HAL_UART_Transmit(&huart1, &tmp, 1, 1);
-    //         // // HAL_UART_Transmit(&huart1, (uint8_t
-    //         *)&Robot_data.calcu_data.X, 1, 1);
-    //         // // HAL_UART_Transmit(&huart1, (uint8_t
-    //         *)&Robot_data.calcu_data.Y, 1, 1);
-    //         // // HAL_UART_Transmit(&huart1, (uint8_t
-    //         *)&Robot_data.calcu_data.Z, 1, 1);
-
-    //         // Robot_calcu(&Robot_data, &Usr_UART);
-    //         // Usr_UART.data[0] = Robot_data.calcu_data.j1_data;
-    //         // Usr_UART.data[1] = Robot_data.calcu_data.j2_data;
-    //         // Usr_UART.data[2] = Robot_data.calcu_data.j3_data;
-    //         // Usr_UART.data[3] = Robot_data.calcu_data.j4_data;
-    //         // Robot_data.move_j4 = Usr_UART.data[3];
-    //         // Robot_data.move_j3 = Usr_UART.data[2];
-    //         // Robot_data.move_j2 = Usr_UART.data[1];
-    //         // Robot_data.move_j1 = Usr_UART.data[0];
-    //         // Robot_Move(&Robot_data, Mot4);
-    //         // Robot_Move(&Robot_data, Mot3);
-    //         // Robot_Move(&Robot_data, Mot2);
-    //         // Robot_Move(&Robot_data, Mot1);
-    //         // // 移动完成
-    //         // HAL_Delay(1000);
-    //         for (int i = 0; i < 9; i++)
-    //         {
-    //             Robot_move_point(&Robot_data, i + 10);
-    //             Robot_move_point(&Robot_data, 0);
-    //             Robot_move_point(&Robot_data, i + 1);
-    //             Robot_move_point(&Robot_data, 0);
-    //         }
-    //         Usr_UART.head = 0xFE;
-    //         HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART, UART_READ_NUM,
-    //         1);
-
-    //         break;
-    //         // 这是测试选项，用于输出结果判断是否处理完成
-    //     case 0xFF:
-    //         // 中心点坐标 145
-    //         // 起始点坐标 48
-    //         // 终值点坐标 238
-    //         // 电机1
-    //         // 中心点坐标 138
-    //         // 起始点坐标 45
-    //         // 终值点坐标 232
-    //         // 电机2
-    //         // 中心点坐标 138
-    //         // 起始点坐标 43
-    //         // 终值点坐标 200
-    //         // 电机3
-    //         // 中心点坐标 150
-    //         // 起始点坐标 50
-    //         // 终值点坐标 238
-    //         // 电机4
-    //         // 移动电机
-    //         // __HAL_TIM_SetCompare(&htim4, Mot2, Usr_UART.data[0]); //
-    //         首先进行电机2的初始化
-
-    //         // 首先读取电机要移动到的目标数据
-    //         Robot_data.move_j4 = Usr_UART.data[0];
-    //         Robot_data.move_j3 = Usr_UART.data[1];
-    //         Robot_data.move_j2 = Usr_UART.data[2];
-    //         Robot_data.move_j1 = Usr_UART.data[3];
-    //         Robot_data.mod = Usr_UART.data[4];
-    //         // 执行移动函数
-    //         // 0号模式，移动到指定位置模式
-    //         if (Robot_data.mod == 0x00)
-    //         {
-    //             Robot_Move(&Robot_data, Mot1);
-    //             Robot_Move(&Robot_data, Mot4);
-    //             Robot_Move(&Robot_data, Mot3);
-    //             Robot_Move(&Robot_data, Mot2);
-    //         }
-    //         // 1号模式，从棋盘到其他地方使用
-    //         else if (Robot_data.mod == 0x01)
-    //         {
-    //             Robot_Move(&Robot_data, Mot2);
-    //             Robot_Move(&Robot_data, Mot3);
-    //             Robot_Move(&Robot_data, Mot4);
-    //             Robot_Move(&Robot_data, Mot1);
-    //         }
-    //         // 2号模式，初始化
-    //         else if (Robot_data.mod == 0x02)
-    //         {
-    //             Robot_Move(&Robot_data, Mot1);
-    //             Robot_Move(&Robot_data, Mot2);
-    //             Robot_Move(&Robot_data, Mot3);
-    //             Robot_Move(&Robot_data, Mot4);
-    //         }
-    //         // 移动完成
-    //         HAL_Delay(1000);
-    //         Usr_UART.head = 0xFF;
-    //         HAL_UART_Transmit(&huart1, (uint8_t *)&Usr_UART, UART_TRAN_NUM,
-    //         1); break;
-    //     default:
-    //         break;
+    //         Usr_UART.ok = 0; // 完成数据的处理
     //     }
-    //     Usr_UART.ok = 0; // 完成数据的处理
-    // }
 
     // if ((Usr_UART.head == 0xA1) && (Usr_UART.ok == 1))
     // {

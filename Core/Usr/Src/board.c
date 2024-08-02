@@ -48,7 +48,7 @@ int Board_moveBoard(Board *board, int id, ROBOT_DATA *data) {
     else
         Robot_move_point(data, 10);
     // 吸
-
+    HAL_Delay(300);
     HAL_GPIO_WritePin(Relay_GPIO_Port, Relay_Pin, GPIO_PIN_SET);
     HAL_Delay(300);
 
@@ -130,8 +130,7 @@ int Board_check(Board *board, int *x, int *y) {
     if(flag){
     	for(int i=0;i<3;i++){
     		for(int j=0;j<3;j++){
-    			if(board->old_board[i][j] == flag &&
-                board->new_board[i][j] == 0 || !board->old_board[i][j] && board->new_board[i][j]==flag){
+    			if(board->old_board[i][j] == flag && board->new_board[i][j] == 0 || !board->old_board[i][j] && board->new_board[i][j]==flag){
     				if(cnt++){
     					*y=i*3+j+1;
     				} else {
@@ -165,6 +164,7 @@ void Board_receiveBoard(Board *board, UART_HandleTypeDef *huart,
     if (Board_check(board, &board->id1, &board->id2)) {
         Board_currentMove(board, board->id1, board->id2, data);
         Board_next_turn(board);
+        return;
     }
     Board_update_board(board);
 }
@@ -196,7 +196,6 @@ int FirstPlay(Board *board, int *x, int *y) {
 // 游戏主循环
 int Board_play(Board *board, UART_HandleTypeDef *huart, ROBOT_DATA *data,
                KEY_DATA *Key) {
-	uint8_t t;
     while (board->cnt < 9 && !(board->end = evaluate(board->new_board, board->player))) {
 //    	OLED_NewFrame();
 //    	char t = board->turn + '0';
@@ -243,8 +242,8 @@ int Board_play(Board *board, UART_HandleTypeDef *huart, ROBOT_DATA *data,
         }
         Board_receiveBoard(board, huart, data);
         board->cnt = count(board->new_board);
-//        t = board->cnt;
-//        HAL_UART_Transmit(&huart1, &t, 1, 10);
+        uint8_t t = 1;
+        HAL_UART_Transmit(&huart1, &t, 1, 10);
         Board_next_turn(board);
     }
     return board->end;

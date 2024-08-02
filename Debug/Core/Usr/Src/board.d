@@ -1,6 +1,6 @@
 Core/Usr/Src/board.o: ../Core/Usr/Src/board.c \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/board.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/alpha_beta.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/board.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/alpha_beta.h \
  ../Core/Inc/usart.h ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
@@ -28,16 +28,16 @@ Core/Usr/Src/board.o: ../Core/Usr/Src/board.c \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/Robot.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/Robot.h \
  ../Core/Inc/main.h ../Core/Inc/dma.h ../Core/Inc/tim.h \
  ../Core/Inc/gpio.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/key.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/oled.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/font.h
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/board.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/alpha_beta.h:
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/key.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/oled.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/font.h
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/board.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/alpha_beta.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
@@ -66,13 +66,13 @@ D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/alpha_beta.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/Robot.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/Robot.h:
 ../Core/Inc/main.h:
 ../Core/Inc/dma.h:
 ../Core/Inc/tim.h:
 ../Core/Inc/gpio.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/key.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/oled.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/font.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/key.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/oled.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/font.h:

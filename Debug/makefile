@@ -67,8 +67,8 @@ all: main-build
 main-build: Robot.elf secondary-outputs
 
 # Tool invocations
-Robot.elf Robot.map: $(OBJS) $(USER_OBJS) D:\桌面\teax2\esports-stm32-development-master\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Robot.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\桌面\teax2\esports-stm32-development-master\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Robot.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Robot.elf Robot.map: $(OBJS) $(USER_OBJS) E:\Work\STM32\Robot2\esports-stm32-development-master\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Robot.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\Work\STM32\Robot2\esports-stm32-development-master\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Robot.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

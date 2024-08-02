@@ -1,5 +1,5 @@
 Core/Usr/Src/key.o: ../Core/Usr/Src/key.c \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/key.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/key.h \
  ../Core/Inc/main.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
@@ -26,8 +26,8 @@ Core/Usr/Src/key.o: ../Core/Usr/Src/key.c \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/key.h:
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/key.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -55,4 +55,4 @@ D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/key.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h:

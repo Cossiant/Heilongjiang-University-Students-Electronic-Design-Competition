@@ -1,6 +1,6 @@
 Core/Usr/Src/get_angle.o: ../Core/Usr/Src/get_angle.c \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h \
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h \
  ../Core/Inc/main.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
@@ -29,9 +29,9 @@ Core/Usr/Src/get_angle.o: ../Core/Usr/Src/get_angle.c \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../Core/Inc/dma.h ../Core/Inc/main.h ../Core/Inc/tim.h \
  ../Core/Inc/usart.h ../Core/Inc/gpio.h \
- D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h:
+ E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -64,4 +64,4 @@ D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/get_angle.h:
 ../Core/Inc/tim.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/gpio.h:
-D:/桌面/teax2/esports-stm32-development-master/Core/Usr/Inc/data.h:
+E:/Work/STM32/Robot2/esports-stm32-development-master/Core/Usr/Inc/data.h:
